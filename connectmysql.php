@@ -1,11 +1,11 @@
 <?php
 function OpenCon()
 {
-        $dbhost = "34.78.37.255";
-        $dbuser = "root";
-        $dbpass = "usuario";
-        $db = "imagenes";
-        $conn = new mysqli($dbhost, $dbuser, $dbpass,$db) or die("Connect failed: %s\n". $conn -> error);
+        $dbhost = "10.132.0.13";
+        $dbuser = "test_user";
+        $dbpass = "test";
+        $db = "test_db";
+        $conn = new mysqli($dbhost, $dbuser, $dbpass,$db);
         return $conn;
 }
 function CloseCon($conn)
@@ -14,44 +14,45 @@ function CloseCon($conn)
 }
 $conn = OpenCon();
 echo "Connected Successfully <br>";
-$resultado = mysqli_query($conn,"SELECT * FROM lista_imagenes");
-echo "Consultando base de datos de imagenes" . "<br>";
-printf("La selección devolvió %d filas. <br>", $resultado->num_rows);
 
-$image_sel = "";
+$tipo_usr = "";
 
 if (isset($_POST['consultar'])) {
-         $image_sel = $_POST["image"];
-         
-         echo "$image_sel";
-         
-         $query = "SELECT ruta FROM lista_imagenes WHERE nombre = '$image_sel'";
-         $resultado2 = mysqli_query($conn,$query);
-         $row_ruta = mysqli_fetch_assoc($resultado2);
-         echo $row_ruta['ruta'];
-         header("Status: 301 Moved Permanently");
-         header("Location: {$row_ruta['ruta']}");
+         $tipo_usr = $_POST["tipo_usuario"];
+
+         if($tipo_usr != ""){
+                $tipo_upper = strtoupper($tipo_usr);
+                  
+                $query = "SELECT * FROM USUARIOS INNER JOIN $tipo_upper ON(USUARIOS.ID = $tipo_upper.ID)";
+                
+                $resultado = mysqli_query($conn,$query);
+
+                print("Los $tipo_usr registrados en la base de datos son: ");
+                while($row = mysqli_fetch_assoc($resultado)) {
+                        print("{$row['nombre']}, ");
+                }
+         }
 }
    
 //CloseCon($conn);
 ?>
 
 <html>
-  <br>
-  <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]);?>"> 
-  <div id="page" class="container">
-  <?php
-        $i = 0;
-	if (mysqli_num_rows($resultado) > 0) {
-	    print "<input type=\"submit\" name=\"consultar\" class=\"btn btn-lg btn-primary\" value=\"Mostrar imagen\"><br>";
-	    while($row = mysqli_fetch_assoc($resultado)) {
-                echo "<input type='radio' name='image' value=\"{$row['nombre']}\">{$row['nombre']}";
-                echo "<br>";
-                $i++;
-            }
-	}
-   ?>
+<body>
+  <div>
+  <form method="post" action="<?php echo $_SERVER['PHP_SELF'];?>"> 
+        <div id="page" class="container">
+        Tipo de Usuario:
+	<input type="radio" name="tipo_usuario"
+	value="alumnos">Alumnos
+	<input type="radio" name="tipo_usuario"
+	value="profesores">Profesores
+	</div>
+        <input type="text" id="nombre" name="nombre" maxlength="50" size="20">
+
+        <input type="submit" name="consultar" value="consultar" />
   </div>
   </form>
+</body>
 </html>
 
