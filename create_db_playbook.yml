@@ -1,0 +1,34 @@
+- name: Configure mysql
+  hosts: database
+  gather_facts: no
+  become: yes
+
+  tasks:
+    
+    - name: create database
+      community.mysql.mysql_db:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        name: test_db
+        state: present
+    
+    - name: copy sql file
+      ansible.builtin.copy:
+        src: ./test_db.sql
+        dest: /home/almu/test_db.sql
+
+    - name: create table and upload data
+      mysql_db:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        name: test_db
+        state: import
+        target: /home/almu/test_db.sql
+
+    - name: create user
+      community.mysql.mysql_user:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        name: test_user
+        password: "test"
+        encrypted: yes
+        priv:
+          'test_db.*': 'ALL,GRANT'
+        state: present

@@ -1,0 +1,43 @@
+- name: update apt
+  hosts: gcp-instances
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: apt update
+      apt:
+        update_cache: yes
+
+- name: Install MySQL in database
+  hosts: database
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Install MySQL and Pip
+      apt:
+        name: [mysql-client, mysql-server, python3-pip]
+        state: present
+
+    - name: Install PyMySQL python module
+      pip:
+        name: PyMySQL
+
+    - name: Start MySQL Server and enable it
+      service: name=mysqld state=started enabled=yes
+
+- name: Install Apache and PHP in webserver
+  hosts: webserver
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: Install Apache and PHP
+      apt:
+        name: [apache2, php, php-mysql] 
+        state: present
+
+    - name: Start apache2
+      service:
+        name: apache2
+        state: started

@@ -1,0 +1,9 @@
+- name: Send ping to instances
+  hosts: webserver, database
+  gather_facts: no
+  become: yes
+
+  tasks:
+   - name: send ping 
+     ansible.builtin.ping:
+      data: pong

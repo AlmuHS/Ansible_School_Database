@@ -1,0 +1,10 @@
+- name: Copy web application to webserver
+  hosts: webserver
+  gather_facts: no
+  become: yes
+
+  tasks:
+    - name: copy php file
+      ansible.builtin.copy:
+        src: ./connectmysql.php
+        dest: /var/www/html/index.php

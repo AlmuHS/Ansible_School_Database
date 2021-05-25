@@ -1,0 +1,103 @@
+- name: Create GCP instances
+  hosts: localhost
+  gather_facts: no
+
+  vars:
+    gcp_cred_file: ./cloudcomputing-311313-84e47e92322c.json
+    gcp_project: cloudcomputing-311313
+    gcp_cred_kind: serviceaccount
+    scopes:
+      - https://www.googleapis.com/auth/compute
+    zone: "europe-west1-b"
+    region: "europe-west1-b"
+    ssh_key: ""
+    user: ""
+    
+
+  tasks:
+    
+    - name: create a network
+      google.cloud.gcp_compute_network:
+        name: network-instance
+        auto_create_subnetworks: 'true'
+        project: "{{ gcp_project }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: network
+
+    - name: create the webserver address
+      google.cloud.gcp_compute_address:
+        name: address-ws
+        region: "europe-west1"
+        project: "{{ gcp_project }}"
+        network_tier: STANDARD
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: address1
+
+    - name: create the database address
+      google.cloud.gcp_compute_address:
+        name: address-db
+        region: "europe-west1"
+        project: "{{ gcp_project }}"
+        network_tier: STANDARD
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      register: address2
+
+    - name: create the instances
+      google.cloud.gcp_compute_instance:
+        name: "{{ item.name }}"
+        machine_type: f1-micro
+        disks:
+        - auto_delete: 'true'
+          boot: 'true'
+          initialize_params:
+            disk_size_gb: 10
+            source_image: projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20210415
+        labels:
+          environment: production
+        network_interfaces:
+        - network: "{{ network }}"
+          access_configs:
+          - name: External NAT
+            nat_ip: "{{ item.address }}"
+            type: ONE_TO_ONE_NAT
+            network_tier: STANDARD
+        metadata:
+          ssh-keys: "{{ user }}:{{ ssh_key }}"
+
+        zone: "{{ zone }}"
+        project: "{{ gcp_project }}"
+        auth_kind: serviceaccount
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+      loop:
+        - {name: 'webserver2', address: '{{ address1 }}'}
+        - {name: 'database2', address: '{{ address2 }}'}
+          
+    - name: create a firewall
+      google.cloud.gcp_compute_firewall:
+        name: firewall
+        allowed:
+        - ip_protocol: tcp
+          ports:
+          - '22'
+          - '80'
+        - ip_protocol: icmp
+        direction: INGRESS
+        source_ranges: "0.0.0.0/0"
+        project: "{{ gcp_project }}"
+        network: "{{ network }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+
+    - name: Wait for webserver SSH to come up
+      wait_for: host={{ address1.address }} port=22 delay=10 timeout=60
+
+    - name: Wait for database SSH to come up
+      wait_for: host={{ address2.address }} port=22 delay=10 timeout=60
