@@ -1,13 +1,14 @@
-CREATE TABLE USUARIOS(
-    id int,
-    usuario varchar(100) UNIQUE,
-    nombre varchar,
-    apellidos varchar,
-    email varchar,
-    primary key(id)
+DROP DATABASE IF EXISTS TEST_DB;
+
+CREATE TABLE IF NOT EXISTS USUARIOS(
+    id int primary key,
+    usuario varchar(20) UNIQUE,
+    nombre varchar(100),
+    apellidos varchar(100),
+    email varchar(50)
 );
 
-CREATE TABLE ALUMNOS(
+CREATE TABLE IF NOT EXISTS ALUMNOS(
     ID INT,
     CURSO INT,
     ETAPA VARCHAR(20),
@@ -15,11 +16,11 @@ CREATE TABLE ALUMNOS(
     FOREIGN KEY(ID) REFERENCES USUARIOS(ID)
 );
 
-CREATE TABLE PROFESORES(
+CREATE TABLE IF NOT EXISTS PROFESORES(
     ID INT,
-    TUTOR: INT,
-    ASIGNATURA: VARCHAR(30)
-    DEPARTAMENTO: VARCHAR(30)
+    TUTOR INT,
+    ASIGNATURA VARCHAR(30),
+    DEPARTAMENTO VARCHAR(30)
 );
 
 -- Inserta usuarios

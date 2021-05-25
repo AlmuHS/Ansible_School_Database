@@ -11,10 +11,25 @@
         name: test_db
         state: present
     
+    - name: create user
+      community.mysql.mysql_user:
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        name: test_user
+        password: "test"
+        priv:
+          'test_db.*': 'ALL,GRANT'
+        state: present
+
     - name: copy sql file
       ansible.builtin.copy:
         src: ./test_db.sql
         dest: /home/almu/test_db.sql
+
+    - name: fix mysql configuration directory
+      ansible.builtin.file:
+        src: /etc/mysql/mysql.conf.d
+        dest: /etc/mysql/mariadb.conf.d
+        state: link
 
     - name: create table and upload data
       mysql_db:
@@ -23,12 +38,4 @@
         state: import
         target: /home/almu/test_db.sql
 
-    - name: create user
-      community.mysql.mysql_user:
-        login_unix_socket: /var/run/mysqld/mysqld.sock
-        name: test_user
-        password: "test"
-        encrypted: yes
-        priv:
-          'test_db.*': 'ALL,GRANT'
-        state: present
+    
