@@ -30,5 +30,5 @@
         password: "test"
         priv:
           'test_db.*': 'SELECT,GRANT'
-        host: 10.132.0.12
+        host: "{{ hostvars[groups['gcp_instances'][0]].webserver_internal_address }}"
         state: present
