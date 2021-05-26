@@ -10,8 +10,8 @@
       - https://www.googleapis.com/auth/compute
     zone: "europe-west1-b"
     region: "europe-west1-b"
-    ssh_key: ""
-    user: ""
+    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDjn5k0ED0AE6A+/cebU3umLbYvJqbyhpDSO8pvgQcBIlKVEWQjoypIXphOeaSSM2vNwrNWEsx/hJ36/v9DfBclgp3Pd64gaz3+l9YX8mCuL2hZgEmV92T2O/SyrZfpZzFZs6lzb/LuAZmuc3Uq6rG/pEDWzOMBOueDMiwRGR/sMZfnI0wUs44gcg8kugVRxolvj/Isl7uzqBGI+ON0xKEq8pjBVDH0uHeD/AycFvRPUCwfihatpMi5fJHrRuzu17QcN9RLqpnvKJrbcPsRpj2w716JsfL5hC3RuzUWdLReuUYb+TivapfQhQne3NLIMuK4+6muDxHqKgnPMfe+SJyy6osGVrcrPEX7y/xsnXrTnz1Pv+03ayZjp17Nevo9485eftR/GzR0XB/0/K6KWp+NS0u1AendTm1rdyQIibWHt7ACbFX60xAwXS4zRB9BUsDB8SPMkVu9CX/zMwJYcD1/gu+pjHt+V8zmz7JJhEEMNV28UQw9WeOc04NfxUChsKE= almu@debian
+    user: almu
     
 
   tasks:
@@ -60,6 +60,8 @@
             source_image: projects/ubuntu-os-cloud/global/images/ubuntu-1804-bionic-v20210415
         labels:
           environment: production
+        tags: 
+          items: "{{ item.tag }}"
         network_interfaces:
         - network: "{{ network }}"
           access_configs:
@@ -76,12 +78,12 @@
         service_account_file: "{{ gcp_cred_file }}"
         state: present
       loop:
-        - {name: 'webserver2', address: '{{ address1 }}'}
-        - {name: 'database2', address: '{{ address2 }}'}
+        - {name: 'webserver2', address: '{{ address1 }}', tag: 'webserver'}
+        - {name: 'database2', address: '{{ address2 }}', tag: 'database'}
           
-    - name: create a firewall
+    - name: create a external firewall
       google.cloud.gcp_compute_firewall:
-        name: firewall
+        name: externalfirewall
         allowed:
         - ip_protocol: tcp
           ports:
@@ -90,6 +92,22 @@
         - ip_protocol: icmp
         direction: INGRESS
         source_ranges: "0.0.0.0/0"
+        project: "{{ gcp_project }}"
+        network: "{{ network }}"
+        auth_kind: "{{ gcp_cred_kind }}"
+        service_account_file: "{{ gcp_cred_file }}"
+        state: present
+
+    - name: create a internal firewall
+      google.cloud.gcp_compute_firewall:
+        name: internalfirewall
+        allowed:
+        - ip_protocol: tcp
+          ports:
+          - '3306' #mysql
+        direction: INGRESS
+        source_tags: 
+          - webserver2
         project: "{{ gcp_project }}"
         network: "{{ network }}"
         auth_kind: "{{ gcp_cred_kind }}"
