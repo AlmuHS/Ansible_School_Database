@@ -24,7 +24,7 @@
         name: PyMySQL
 
     - name: Start MySQL Server and enable it
-      service: name=mysqld state=started enabled=yes
+      service: name=mysql state=started enabled=yes
 
 - name: Install Apache and PHP in webserver
   hosts: webserver
@@ -34,10 +34,11 @@
   tasks:
     - name: Install Apache and PHP
       apt:
-        name: [apache2, php, php-mysql] 
+        name: [apache2, php, php-mysql, php-db]  
         state: present
 
     - name: Start apache2
       service:
         name: apache2
         state: started
+        enabled: yes
