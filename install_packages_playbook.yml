@@ -1,5 +1,5 @@
 - name: update apt
-  hosts: gcp-instances
+  hosts: gcp_instances
   gather_facts: no
   become: yes
 
