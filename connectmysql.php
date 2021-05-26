@@ -36,7 +36,7 @@ if (isset($_POST['consultar'])) {
                         print_r($row);
                 }
          }
-         else if($nombre_ == ""){
+         else if($nombre_ == "" && $tipo_usr != ""){
                 $tipo_upper = strtoupper($tipo_usr);
                   
                 $query = "SELECT * FROM USUARIOS INNER JOIN $tipo_upper ON(USUARIOS.ID = $tipo_upper.ID)";
