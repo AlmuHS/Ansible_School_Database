@@ -29,5 +29,6 @@
         name: test_user
         password: "test"
         priv:
-          'test_db.*': 'ALL,GRANT'
+          'test_db.*': 'SELECT,GRANT'
+        host: 10.132.0.12
         state: present
