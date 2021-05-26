@@ -10,8 +10,8 @@
       - https://www.googleapis.com/auth/compute
     zone: "europe-west1-b"
     region: "europe-west1-b"
-    ssh_key: ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDjn5k0ED0AE6A+/cebU3umLbYvJqbyhpDSO8pvgQcBIlKVEWQjoypIXphOeaSSM2vNwrNWEsx/hJ36/v9DfBclgp3Pd64gaz3+l9YX8mCuL2hZgEmV92T2O/SyrZfpZzFZs6lzb/LuAZmuc3Uq6rG/pEDWzOMBOueDMiwRGR/sMZfnI0wUs44gcg8kugVRxolvj/Isl7uzqBGI+ON0xKEq8pjBVDH0uHeD/AycFvRPUCwfihatpMi5fJHrRuzu17QcN9RLqpnvKJrbcPsRpj2w716JsfL5hC3RuzUWdLReuUYb+TivapfQhQne3NLIMuK4+6muDxHqKgnPMfe+SJyy6osGVrcrPEX7y/xsnXrTnz1Pv+03ayZjp17Nevo9485eftR/GzR0XB/0/K6KWp+NS0u1AendTm1rdyQIibWHt7ACbFX60xAwXS4zRB9BUsDB8SPMkVu9CX/zMwJYcD1/gu+pjHt+V8zmz7JJhEEMNV28UQw9WeOc04NfxUChsKE= almu@debian
-    user: almu
+    ssh_key: ssh-rsa 
+    user: user
     
 
   tasks:
