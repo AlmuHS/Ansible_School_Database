@@ -47,42 +47,42 @@ Las otras dos variables servirán para asociar una clave ssh a las VM, vinculada
 
 Para crear la cuenta de servicio debemos entrar, dentro de nuestro proyecto de GCP, en la sección "IAM y Administración" y, en el panel lateral, seleccionar "Crear cuenta de servicio". 
 
-![](imagenes/Screenshot_2021-05-26 Crear cuenta de servicio – IAM y administración – CloudComputing – Google Cloud Platform.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Crear%20cuenta%20de%20servicio%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform.png)
 
 Rellenamos los datos y pulsamos en "Crear"
 
-![](imagenes/Screenshot_2021-05-26 Crear cuenta de servicio – IAM y administración – CloudComputing – Google Cloud Platform1.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Crear%20cuenta%20de%20servicio%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform1.png)
 
 Posteriormente, deberemos asignar los roles necesarios a la cuenta, para tener los permisos necesarios para crear y gestionar los recursos y las instancias.
 
-![](imagenes/Screenshot_2021-05-26 Crear cuenta de servicio – IAM y administración – CloudComputing – Google Cloud Platform(1).png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Crear%20cuenta%20de%20servicio%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform(1).png)
 
-![](imagenes/Screenshot_2021-05-26 Crear cuenta de servicio – IAM y administración – CloudComputing – Google Cloud Platform2.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Crear%20cuenta%20de%20servicio%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform2.png)
 
 Dentro de la lista, buscamos los roles correspondientes a la administración de los recursos de Compute Engine, administración de la administración de la red, y administración de acceso a VPC sin servidor.
 
 Una vez terminado, pulsamos en "Listo" para crear la cuenta de servicio.
 
-![](imagenes/Screenshot_2021-05-26 Cuentas de servicio – IAM y administración – CloudComputing – Google Cloud Platform.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Cuentas%20de%20servicio%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform.png)
 
 ##### Descarga de la clave
 
 Una vez creada la cuenta de servicio con los permisos necesarios, descargamos la clave a nuestro equipo.
 Pulsamos en el nombre de nuestra cuenta de servicio, y entramos en la pestaña "Claves"
 
-![](imagenes/Screenshot_2021-05-26 gcp_ansible – IAM y administración – CloudComputing – Google Cloud Platform.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20gcp_ansible%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform.png)
 
 Pulsamos en "Agregar clave" -> "Crear clave nueva"
 
-![](imagenes/Screenshot_2021-05-26 gcp_ansible – IAM y administración – CloudComputing – Google Cloud Platform2.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20gcp_ansible%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform2.png)
 
 En formato, seleccionamos JSON
 
-![](imagenes/Screenshot_2021-05-26 gcp_ansible – IAM y administración – CloudComputing – Google Cloud Platform(1).png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20gcp_ansible%20%E2%80%93%20IAM%20y%20administraci%C3%B3n%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform(1).png)
 
 Pulsamos en "Crear"
 
-![](imagenes/Captura de pantalla de 2021-05-26 19-49-09.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Captura%20de%20pantalla%20de%202021-05-26%2019-49-09.png)
 
 Se nos descargará el fichero de la clave de nuestro equipo.
 
@@ -177,7 +177,7 @@ Una vez creadas las máquinas, creamos un inventario con las mismas. En el inven
 
 Para obtener las direcciones IP, nos vamos a la web de Google Cloud y, en Compute Engine, buscamos nuestras máquinas. En este caso, se llamarán "webserver2" y "database2".
 
-![](imagenes/Screenshot_2021-05-26 Instancias de VM – Compute Engine – CloudComputing – Google Cloud Platform.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Instancias%20de%20VM%20%E2%80%93%20Compute%20Engine%20%E2%80%93%20CloudComputing%20%E2%80%93%20Google%20Cloud%20Platform.png)
 
 Nos anotamos las direcciones IP externas de nuestras máquinas, que las añadiremos posteriormente al inventario. También necesitaremos la IP interna de "webserver2", que la necesitaremos posteriormente.
 
@@ -306,19 +306,19 @@ Esta aplicación se copiará al webserver mediante el playbook [`copy_webapp_pla
 
 Para probar la aplicación web, simplemente tenemos que abrir la IP externa del webserver desde nuestro navegador.
 
-![](imagenes/Screenshot_2021-05-26 Screenshot.png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Screenshot.png)
 
 Si la aplicación se ha conectado correctamente a la base de datos, veremos un mensaje de "Connected Successfully"
 
 Seleccionamos "Alumnos" y pulsamos en el botón "consultar"
 
-![](imagenes/Screenshot_2021-05-26 Screenshot(1).png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Screenshot(1).png)
 
 Vemos los nombres de los alumnos registrados
 
 Escribimos el nombre de algún alumno, y seleccionando "Alumno", pulsamos en "consultar"
 
-![](imagenes/Screenshot_2021-05-26 Screenshot(2).png)
+![](https://raw.githubusercontent.com/AlmuHS/Practica_Ansible_Cloud/master/imagenes/Screenshot_2021-05-26%20Screenshot(2).png)
 
 Veremos los datos almacenados sobre dicho alumno en la base de datos
 
